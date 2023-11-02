@@ -90,15 +90,17 @@ class MainActivity : ComponentActivity() {
                         Divider(color = Color.White, thickness = 1.dp)
 
                         Text(
-                            "Screenshot of the content",
+                            "Bifocal view",
                             fontSize = 24.sp,
                             fontWeight = FontWeight.Bold
                         )
 
                         if (image != null) {
-                            Image(
-                                bitmap = image!!.asImageBitmap(),
-                                contentDescription = "screenshot"
+                            BifocalView(
+                                image = image!!,
+                                width = width,
+                                height = height,
+                                eyeDistance = eyeDistance
                             )
                         } else {
                             Text("No image yet ...")
