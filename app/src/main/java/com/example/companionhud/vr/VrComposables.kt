@@ -1,8 +1,6 @@
-package com.example.companionhud
+package com.example.companionhud.vr
 
 import android.graphics.Bitmap
-import android.util.Log
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -16,15 +14,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.view.drawToBitmap
-import androidx.core.view.size
 
 @Composable
 fun VrBox(baseWidth: Int, baseHeight: Int, eyeDistance: Int, content: @Composable () -> Unit) {
@@ -44,7 +39,7 @@ fun Screenshot(onResult: (Bitmap) -> Unit, content: @Composable () -> Unit) {
     var composeView: ComposeView? by remember { mutableStateOf(null) }
 
     LaunchedEffect(image, composeView?.width, composeView?.height) {
-        Log.d("Sizes", "$image, ${composeView?.width}px, ${composeView?.height}")
+        //Log.d("Sizes", "$image, ${composeView?.width}px, ${composeView?.height}")
         if(composeView?.width != 0 && composeView?.height != 0)
             image = composeView?.drawToBitmap()
 
@@ -67,11 +62,12 @@ fun BifocalView(image: Bitmap, width: Int, height: Int, eyeDistance: Int) {
         modifier = Modifier
             .width(width.pxToDp.dp)
             .height(height.pxToDp.dp)
-            .background(Color.DarkGray),
+            .background(Color.Black),
         horizontalArrangement = Arrangement.Center
     ) {
-        EyeImage(image, eyeDistance, true, modifier=Modifier.fillMaxHeight())
-        EyeImage(image, eyeDistance, false, modifier=Modifier.fillMaxHeight())
+        val eyeMod = Modifier.width((width/2).pxToDp.dp).fillMaxHeight()
+        EyeImage(image, eyeDistance, true, modifier=eyeMod)
+        EyeImage(image, eyeDistance, false, modifier=eyeMod)
     }
 }
 
@@ -81,5 +77,5 @@ fun EyeImage(image: Bitmap, eyeDistance: Int, isLeftEye: Boolean, modifier: Modi
     val eyeWidth = image.width - eyeDistance
     val croppedImage = Bitmap.createBitmap(image, eyeX, 0, eyeWidth, image.height)
 
-    Image(bitmap = croppedImage.asImageBitmap(), contentDescription = "Eye", modifier = modifier)
+    DistortionView(image = croppedImage, k1 = 0.215f, k2 = 0.215f, modifier = modifier)
 }

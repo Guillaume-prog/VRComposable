@@ -1,4 +1,4 @@
-package com.example.companionhud
+package com.example.companionhud.vr
 
 import android.content.res.Resources
 
