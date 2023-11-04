@@ -1,8 +1,8 @@
 
 package com.example.companionhud
 
+import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -14,9 +14,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.Button
 import androidx.compose.material3.Divider
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
+import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -27,6 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.companionhud.ui.theme.CompanionHUDTheme
@@ -46,23 +47,25 @@ class MainActivity : ComponentActivity() {
             it.height().toFloat() / it.width()
         }
 
-        val mountainImage = BitmapFactory.decodeResource(resources, R.drawable.photo_mountain)
-
         setContent {
             CompanionHUDTheme {
                 // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(10.dp)
+                        .background(Color.White)
                 ) {
 
                     var width by remember { mutableStateOf(0) }
                     val height = (width / screenAspectRatio).toInt()
-                    val eyeDistance = 60
+                    val size = IntSize(width, height)
+                    var eyeDistance by remember {
+                        mutableStateOf(60f)
+                    }
 
                     Column(
                         modifier = Modifier
-                            .padding(10.dp)
                             .onGloballyPositioned { width = it.size.width },
                         verticalArrangement = Arrangement.spacedBy(10.dp)
                     ) {
@@ -80,16 +83,15 @@ class MainActivity : ComponentActivity() {
                         ) {
                             Screenshot(onResult = { image = it }) {
                                 VrBox(
-                                    baseWidth = width,
-                                    baseHeight = height,
-                                    eyeDistance = eyeDistance
+                                    baseSize = size,
+                                    eyeDistance = eyeDistance.toInt()
                                 ) {
                                     ContentBox(Modifier.fillMaxSize())
                                 }
                             }
                         }
 
-                        Divider(color = Color.White, thickness = 1.dp)
+                        Divider(color = Color.Black, thickness = 1.dp)
 
                         Text(
                             "Stereoscopic view",
@@ -100,13 +102,30 @@ class MainActivity : ComponentActivity() {
                         if (image != null) {
                             BifocalView(
                                 image = image!!,
-                                width = width,
-                                height = height,
-                                eyeDistance = eyeDistance
+                                size = size,
+                                eyeDistance = eyeDistance.toInt(),
+                                distortionParams = Pair(0.215f, 0.215f)
                             )
                         } else {
                             Text("No image yet ...")
                         }
+
+                        Text("Adjust eye distance: ${eyeDistance.toInt()}")
+
+                        Slider(
+                            value = eyeDistance,
+                            valueRange = 0f..100f,
+                            steps = 99,
+                            onValueChange = { eyeDistance = it }
+                        )
+                    }
+                    
+                    Button(onClick = {
+                        startActivity(Intent(this@MainActivity, VrActivity::class.java).apply {
+                            putExtra("eyeDistance", eyeDistance.toInt())
+                        })
+                    }, Modifier.align(Alignment.BottomEnd)) {
+                        Text(text = "Fullscreen demo")
                     }
 
                 }
