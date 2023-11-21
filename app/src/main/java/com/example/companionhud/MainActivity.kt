@@ -31,10 +31,9 @@ import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.companionhud.ui.theme.CompanionHUDTheme
-import com.example.companionhud.vr.BifocalView
-import com.example.companionhud.vr.Screenshot
-import com.example.companionhud.vr.VrBox
-import com.example.companionhud.vr.pxToDp
+import org.github.guillaumeprog.vrview.Screenshot
+import org.github.guillaumeprog.vrview.VrBox
+import org.github.guillaumeprog.vrview.pxToDp
 
 class MainActivity : ComponentActivity() {
 
@@ -100,12 +99,12 @@ class MainActivity : ComponentActivity() {
                         )
 
                         if (image != null) {
-                            BifocalView(
+                            /*BifocalView(
                                 image = image!!,
                                 size = size,
                                 eyeDistance = eyeDistance.toInt(),
                                 distortionParams = Pair(0.215f, 0.215f)
-                            )
+                            )*/
                         } else {
                             Text("No image yet ...")
                         }

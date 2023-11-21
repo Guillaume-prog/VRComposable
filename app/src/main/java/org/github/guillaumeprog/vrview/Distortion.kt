@@ -1,8 +1,10 @@
-package com.example.companionhud.vr
+package org.github.guillaumeprog.vrview
 
 import android.graphics.Bitmap
 import android.graphics.RenderEffect
 import android.graphics.RuntimeShader
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -54,6 +56,7 @@ vec4 main(vec2 coord) {
 }
 """.trimIndent()
 
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
 fun DistortionView(image: Bitmap, k1: Float, k2: Float, modifier: Modifier = Modifier) {
     val distortionShader = remember {

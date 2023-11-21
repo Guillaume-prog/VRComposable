@@ -1,4 +1,4 @@
-package com.example.companionhud.vr
+package org.github.guillaumeprog.vrview
 
 import android.graphics.Bitmap
 import androidx.compose.foundation.layout.Box

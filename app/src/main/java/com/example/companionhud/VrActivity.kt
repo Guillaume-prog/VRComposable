@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.IntSize
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import com.example.companionhud.ui.theme.CompanionHUDTheme
-import com.example.companionhud.vr.VrView
+import org.github.guillaumeprog.vrview.VrView
 
 class VrActivity : ComponentActivity() {
 
