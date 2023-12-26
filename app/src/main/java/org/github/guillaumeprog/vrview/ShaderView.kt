@@ -11,13 +11,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.Lifecycle
+import kotlinx.coroutines.withContext
 import org.github.guillaumeprog.vrview.shader.Renderer
 
 @Composable
 fun ShaderView(image: Bitmap, modifier: Modifier = Modifier) {
-    val renderer = remember { Renderer(image) }
+    val renderer = remember { Renderer() }
+
+    renderer.setTexture(image)
+    //renderer.setDistortionParams(0.215f, 0.215f)
+    //renderer.setEyeDistance(60f)
 
     Column {
         AndroidView(
