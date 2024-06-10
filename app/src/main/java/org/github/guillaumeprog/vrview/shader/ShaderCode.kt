@@ -11,14 +11,14 @@ class ShaderCode {
 
 @Language("GLSL")
 private val testFrag = """
-    precision highp float;
+precision highp float;
 
-    uniform sampler2D uTexture;
-    varying vec2 vTexCoord;
+uniform sampler2D uTexture;
+varying vec2 vTexCoord;
 
-    void main(void){
-        gl_FragColor = texture2D(uTexture, vTexCoord);//vec4(1.0, 0.0, 0.0, 1.0);
-    }
+void main(void){
+    gl_FragColor = texture2D(uTexture, vTexCoord);//vec4(1.0, 0.0, 0.0, 1.0);
+}
 """.trimIndent()
 
 @Language("GLSL")
